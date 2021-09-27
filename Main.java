@@ -1,18 +1,16 @@
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
-		CallCenter callCenter = new CallCenter();
+		Operator operator = new Operator();
+		Client client = new Client(operator);
 		
-		Runnable calls = callCenter::clientCall;
-		Runnable operatorsProcessed = callCenter::operatorProcessed;
+		Thread clients = new Thread(null, client, "Очередь звонков");
 		
-		Thread producer = new Thread(null, calls, "Очередь звонков");
+		Thread operator1 = new Thread(null, operator, "Оператор 1");
+		Thread operator2 = new Thread(null, operator, "Оператор 2");
+		Thread operator3 = new Thread(null, operator, "Оператор 3");
+		Thread operator4 = new Thread(null, operator, "Оператор 4");
 		
-		Thread operator1 = new Thread(null, operatorsProcessed, "Оператор 1");
-		Thread operator2 = new Thread(null, operatorsProcessed, "Оператор 2");
-		Thread operator3 = new Thread(null, operatorsProcessed, "Оператор 3");
-		Thread operator4 = new Thread(null, operatorsProcessed, "Оператор 4");
-		
-		producer.start();
+		clients.start();
 		operator1.start();
 		operator2.start();
 		operator3.start();
